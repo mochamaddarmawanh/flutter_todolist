@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'data.dart';
 
 void main() {
   runApp(const MainApp());
@@ -86,6 +87,10 @@ class MainApp extends StatelessWidget {
                   child: Text('4. Raudiah Rahadatul Fitriani. H (40621100013)'),
                 ),
                 Container(
+                  padding: EdgeInsets.only(bottom: 8.0),
+                  child: Text('5. Sema Oktaviani Tinting (0619101018)'),
+                ),
+                Container(
                   padding: EdgeInsets.symmetric(vertical: 15.0),
                   child: Column(
                     children: [
@@ -101,7 +106,7 @@ class MainApp extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'yang dibimbing oleh dosen Bapak Mochamad Darmawan Hardjakusumah.',
+                        'yang dibimbing oleh dosen Bapak Kunia Jaya Eliazar, S.T., M.T..',
                         style: TextStyle(color: Colors.black45),
                       ),
                       Padding(
@@ -183,15 +188,15 @@ class MainApp extends StatelessWidget {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
 
-                      final SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      List<String> tasks = prefs.getStringList('tasks') ?? [];
+                      Data data = SharedPreferencesData();
+
+                      List<String> tasks = await data.getData();
 
                       DateTime currentTime = DateTime.now();
                       String task = '$newTask - $currentTime - false';
 
                       tasks.add(task);
-                      await prefs.setStringList('tasks', tasks);
+                      await data.saveData(tasks);
 
                       Navigator.pushReplacement(
                         context,
@@ -390,8 +395,9 @@ class _TodoContentState extends State<TodoContent> {
   }
 
   void _updateTaskStatus(int index, bool isChecked) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> tasks = prefs.getStringList('tasks') ?? [];
+    Data data = SharedPreferencesData();
+
+    List<String> tasks = await data.getData();
 
     List<String> taskParts = tasks[index].split(' - ');
     String task = taskParts[0];
@@ -401,7 +407,7 @@ class _TodoContentState extends State<TodoContent> {
     String updatedTask = '$task - $time - $status';
     tasks[index] = updatedTask;
 
-    await prefs.setStringList('tasks', tasks);
+    await data.saveData(tasks);
 
     Navigator.pushReplacement(
       context,
@@ -412,8 +418,9 @@ class _TodoContentState extends State<TodoContent> {
   }
 
   void _editTask(BuildContext context, int index) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> tasks = prefs.getStringList('tasks') ?? [];
+    Data data = SharedPreferencesData();
+
+    List<String> tasks = await data.getData();
 
     List<String> taskParts = tasks[index].split(' - ');
     String task = taskParts[0];
@@ -474,7 +481,7 @@ class _TodoContentState extends State<TodoContent> {
                       tasks[index] =
                           '$editedTask - ${taskParts[1]} - ${taskParts[2]}';
 
-                      await prefs.setStringList('tasks', tasks);
+                      await data.saveData(tasks);
 
                       Navigator.pushReplacement(
                         context,
@@ -518,8 +525,9 @@ class _TodoContentState extends State<TodoContent> {
   }
 
   void _deleteTask(BuildContext context, int index) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> tasks = prefs.getStringList('tasks') ?? [];
+    Data data = SharedPreferencesData();
+
+    List<String> tasks = await data.getData();
 
     showDialog(
       context: context,
@@ -545,7 +553,7 @@ class _TodoContentState extends State<TodoContent> {
             TextButton(
               onPressed: () async {
                 tasks.removeAt(index);
-                await prefs.setStringList('tasks', tasks);
+                await data.saveData(tasks);
 
                 Navigator.pushReplacement(
                   context,
