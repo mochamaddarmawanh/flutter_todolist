@@ -1,0 +1,129 @@
+1. Class & object:
+    class MainApp extends StatelessWidget {} -Class MainApp juga extend ke StatelessWidget dan library nya flutter material.dart
+    const MainApp() -Object
+
+2. Encapsulation:
+    final _formKey = GlobalKey<FormState>(); -Private, private pada dart d tandai dengan _
+    String? editedTask; -Public
+
+3. Overloading:
+    Dalam kode to do list ini, tidak ada contoh overloading karena Dart tidak mendukung overloading seperti prilaku dengan metode atau fungsi yang sama namun parameter yang berbeda. Namun, Dart memiliki dukungan untuk parameter opsional dan parameter default, yang memungkinkan untuk mencapai perilaku yang mirip dengan overloading dalam beberapa kasus. Dalam penggunaan dart dapat menggunakan parameter opsional dengan kurung [] atau parameter default dengan tanda = untuk memungkinkan pemanggilan metode dengan atau tanpa parameter tertentu. Berikut adalah contoh penggunaan parameter opsional dan parameter default dalam Dart:
+    "
+        class Calculator {
+            int add(int a, int b) {
+                return a + b;
+            }
+
+            int addThreeNumbers(int a, int b, [int c = 0]) {
+                return a + b + c;
+            }
+        }
+
+        void main() {
+            Calculator calculator = Calculator();
+            int result1 = calculator.add(3, 4);
+            int result2 = calculator.addThreeNumbers(2, 3);
+            int result3 = calculator.addThreeNumbers(2, 3, 4);
+            
+            print('Result 1: $result1'); // Output: Result 1: 7
+            print('Result 2: $result2'); // Output: Result 2: 5
+            print('Result 3: $result3'); // Output: Result 3: 9
+        }
+    "
+
+4. Overriding:
+    "
+        abstract class Data {
+            Future<List<String>> getData();
+            Future<void> saveData(List<String> tasks);
+        }
+
+        class SharedPreferencesData extends Data {
+            @override
+            Future<List<String>> getData() async {
+                final SharedPreferences prefs = await SharedPreferences.getInstance();
+                List<String> tasks = prefs.getStringList('tasks') ?? [];
+                return tasks;
+            }
+
+            @override
+            Future<void> saveData(List<String> tasks) async {
+                final SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setStringList('tasks', tasks);
+            }
+        }
+    "
+
+    ===== Contoh lain yang lebih simple dan mudah =====
+
+    "
+        abstract class Animal {
+            void makeSound();
+        }
+
+        class Dog extends Animal {
+            void makeSound() {
+                print("Dog barks");
+            }
+        }
+
+        class Cat extends Animal {
+            void makeSound() {
+                print("Cat meows");
+            }
+        }
+
+        class Cow extends Animal {
+            void makeSound() {
+                print("Cow moos");
+            }
+        }
+
+        void main() {
+            List<Animal> animals = [Dog(), Cat(), Cow()];
+
+            for (Animal animal in animals) {
+                animal.makeSound();
+            }
+        }
+
+        // output: 
+        // Dog barks
+        // Cat meows
+        // Cow moos
+    "
+
+    ===== Pengertian =====
+
+    - In the above example, the Animal class has a method makeSound(). The Cat class inherits from Animal and overrides the makeSound() method with its own implementation. This is an example of method overriding.
+    - Dalam method overriding, sebuah subclass memiliki metode dengan nama yang sama seperti yang ada di superclassnya, dan subclass mengubah implementasi metode tersebut. Saat metode dipanggil pada objek subclass, metode yang diimplementasikan di subclass akan dieksekusi.
+
+5. Constructor:
+    const TodoContent({required this.tasks}); -Constructor untuk class TodoContent
+    return TodoContent(tasks: tasks); -Memberikan parameter untuk class TodoContent
+    "
+        Constructor adalah untuk agar sebuah object dari class nantinya dapat di masukan sebuah parameter
+    "
+
+6. Polymorphsm:
+    - Polymorphism adalah konsep dalam pemrograman di mana objek dapat memiliki banyak bentuk. Secara lebih spesifik, dalam konteks OOP (Object-Oriented Programming), polymorphism mengacu pada kemampuan objek untuk merespons dengan cara yang berbeda tergantung pada jenis objek yang sebenarnya. 
+    - Ada dua bentuk utama dari polymorphism dalam OOP: static polymorphism dan dynamic polymorphism.
+    - Contoh dari static polymorphism adalah method overloading, sudah di jelaskan diatas.
+    - Contoh dari dynamic polymorphism adalah method overriding, sudah di jelaskan di atas.
+
+7. Interface example:
+    Belum faham
+
+8. Exception:
+    - Exception (kesalahan atau pengecualian) adalah situasi abnormal atau kondisi tak terduga yang terjadi saat program sedang berjalan. Exception digunakan untuk menangani kesalahan atau situasi yang di luar kendali program dan memungkinkan kita untuk merespons dan mengatasi masalah tersebut.
+    -P rogram akan mencoba (try) jika pada blok try terdapat kesalahan maka program di blok try akan berhenti dan akan melemparkan informasi ke blok catch yang di berikan informasi kesalahan tersebut dengan menggunakan parameter.
+    "
+        try {
+            final SharedPreferences prefs = await SharedPreferences.getInstance();
+            List<String> tasks = prefs.getStringList('tasks') ?? [];
+            return tasks;
+        } catch (e) {
+            print('Error getting data: $e');
+            return []; // Mengembalikan daftar kosong jika terjadi kesalahan
+        }
+    "
